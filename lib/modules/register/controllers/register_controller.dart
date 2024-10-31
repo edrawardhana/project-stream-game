@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterController extends GetxController {
   var email = ''.obs;
   var password = ''.obs;
   var confirmPassword = ''.obs;
   var isLoading = false.obs;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void register() async {
     if (email.value.isEmpty || password.value.isEmpty || confirmPassword.value.isEmpty) {
@@ -16,12 +18,12 @@ class RegisterController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        margin: EdgeInsets.all(0), // Mengatur margin
-        borderRadius: 12, // Sudut tumpul
-        isDismissible: true, // Mengizinkan pengguna untuk menutup snackbar
-        duration: Duration(seconds: 2), // Durasi snackbar ditampilkan
+        margin: EdgeInsets.all(0),
+        borderRadius: 12,
+        isDismissible: true,
+        duration: Duration(seconds: 2),
       );
-      return; // Tidak melanjutkan proses registrasi
+      return;
     }
 
     if (password.value != confirmPassword.value) {
@@ -31,39 +33,52 @@ class RegisterController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        margin: EdgeInsets.all(0), // Mengatur margin
-        borderRadius: 12, // Sudut tumpul
-        isDismissible: true, // Mengizinkan pengguna untuk menutup snackbar
-        duration: Duration(seconds: 2), // Durasi snackbar ditampilkan
+        margin: EdgeInsets.all(0),
+        borderRadius: 12,
+        isDismissible: true,
+        duration: Duration(seconds: 2),
       );
-      return; // Tidak melanjutkan proses registrasi
+      return;
     }
 
     isLoading.value = true;
 
-    // Simulasi proses registrasi
-    await Future.delayed(Duration(seconds: 2), () {
+    try {
+      // Melakukan registrasi dengan Firebase
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email.value,
+        password: password.value,
+      );
+
       isLoading.value = false;
-    });
 
-    // Menyimpan data ke SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('email', email.value);
-    await prefs.setString('password', password.value);
+      Get.snackbar(
+        'Success',
+        'Account created successfully!',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        margin: EdgeInsets.all(0),
+        borderRadius: 12,
+        isDismissible: true,
+        duration: Duration(seconds: 2),
+      );
 
-    Get.snackbar(
-      'Success',
-      'Account created successfully!',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-      margin: EdgeInsets.all(0), // Mengatur margin
-      borderRadius: 12, // Sudut tumpul
-      isDismissible: true, // Mengizinkan pengguna untuk menutup snackbar
-      duration: Duration(seconds: 2), // Durasi snackbar ditampilkan
-    );
-
-    // Navigasi ke halaman login setelah registrasi berhasil
-    Get.offNamed('/login');
+      // Navigasi ke halaman login setelah registrasi berhasil
+      Get.offNamed('/login');
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'Error',
+        'Registration failed: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        margin: EdgeInsets.all(0),
+        borderRadius: 12,
+        isDismissible: true,
+        duration: Duration(seconds: 2),
+      );
+    }
   }
 }

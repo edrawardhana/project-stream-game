@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   var email = ''.obs;
   var password = ''.obs;
   var isLoading = false.obs;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void login() async {
     if (email.value.isEmpty || password.value.isEmpty) {
@@ -15,42 +17,39 @@ class LoginController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        margin: EdgeInsets.all(0), // Mengatur margin
-        borderRadius: 12, // Sudut tumpul
-        isDismissible: true, // Mengizinkan pengguna untuk menutup snackbar
-        duration: Duration(seconds: 2), // Durasi snackbar ditampilkan
+        margin: EdgeInsets.all(0),
+        borderRadius: 12,
+        isDismissible: true,
+        duration: Duration(seconds: 2),
       );
-      return; // Tidak melanjutkan proses login
+      return;
     }
 
     isLoading.value = true;
 
-    // Mendapatkan SharedPreferences untuk memeriksa kredensial
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? storedEmail = prefs.getString('email');
-    String? storedPassword = prefs.getString('password');
+    try {
+      // Melakukan login dengan Firebase
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email.value,
+        password: password.value,
+      );
 
-    // Simulasi proses login
-    await Future.delayed(Duration(seconds: 2), () {
       isLoading.value = false;
-    });
 
-    // Memeriksa apakah email dan password cocok
-    if (email.value == storedEmail && password.value == storedPassword) {
-      // Login berhasil
+      // Jika login berhasil, arahkan ke halaman home
       Get.offNamed('/home');
-    } else {
-      // Login gagal
+    } catch (e) {
+      isLoading.value = false;
       Get.snackbar(
         'Error',
         'Invalid email or password',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        margin: EdgeInsets.all(0), // Mengatur margin
-        borderRadius: 12, // Sudut tumpul
-        isDismissible: true, // Mengizinkan pengguna untuk menutup snackbar
-        duration: Duration(seconds: 2), // Durasi snackbar ditampilkan
+        margin: EdgeInsets.all(0),
+        borderRadius: 12,
+        isDismissible: true,
+        duration: Duration(seconds: 2),
       );
     }
   }
