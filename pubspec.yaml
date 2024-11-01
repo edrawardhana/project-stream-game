@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.0.6
   firebase_core: ^2.15.1
   firebase_auth: ^4.8.1
+  cloud_firestore: ^4.5.1
 
 dev_dependencies:
   flutter_test:
@@ -64,22 +65,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   # assets:
   assets:
-    - assets/background.jpg # Ganti dengan nama file gambar Anda
-    - assets/profile.png
-    - assets/trending_game1.png
-    - assets/trending_game2.png
-    - assets/trending_game3.png
-    - assets/trending_game4.png
-    - assets/trending_game5.png
-    - assets/trending_game6.png
-    - assets/new_game1.png
-    - assets/new_game2.png
-    - assets/new_game3.png
-    - assets/new_game4.png
-    - assets/new_game5.png
-    - assets/new_game6.png
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

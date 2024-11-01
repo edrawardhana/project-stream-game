@@ -1,3 +1,4 @@
+import 'package:flutter_application_2/modules/profile/views/edit_profile_view.dart';
 import 'package:get/get.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/views/login_view.dart';
@@ -37,6 +38,10 @@ class AppPages {
       name: AppRoutes.GAME_DETAIL,
       page: () => GameDetailView(),
       binding: GameDetailBinding(),
+    ),
+    GetPage(
+      name: '/edit-profile',
+      page: () => EditProfileView(),
     ),
   ];
 }

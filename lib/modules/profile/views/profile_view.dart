@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
+import 'edit_profile_view.dart'; // Import the edit profile view
 
 class ProfileView extends StatelessWidget {
   @override
@@ -33,10 +34,7 @@ class ProfileView extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: () {
-                              // Back action
-                              Get.back(); // Menggunakan Get untuk kembali ke layar sebelumnya
-                            },
+                            onPressed: () => Get.back(),
                           ),
                           SizedBox(width: 8),
                           Text(
@@ -58,42 +56,42 @@ class ProfileView extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
 
-                // Profile Picture and Name
-                CircleAvatar(
+                // Profile Picture and Name with Obx
+                Obx(() => CircleAvatar(
                   backgroundImage: NetworkImage(controller.user.value.profilePicture),
                   radius: 50,
-                ),
+                )),
                 SizedBox(height: 10),
-                Text(
+                Obx(() => Text(
                   controller.user.value.username,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-                ),
+                )),
                 SizedBox(height: 5),
-                Text(
+                Obx(() => Text(
                   controller.user.value.bio ?? "Add a bio...",
                   style: TextStyle(color: Colors.white70),
-                ),
+                )),
 
                 SizedBox(height: 20),
 
-                // Followers and Following Stats
+                // Followers and Following Stats with Obx
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
                       children: [
-                        Text(
+                        Obx(() => Text(
                           '${controller.user.value.followers}',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                        ),
+                        )),
                         Text(
                           'Followers',
                           style: TextStyle(color: Colors.white70),
@@ -103,14 +101,14 @@ class ProfileView extends StatelessWidget {
                     SizedBox(width: 30),
                     Column(
                       children: [
-                        Text(
+                        Obx(() => Text(
                           '${controller.user.value.following}',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                        ),
+                        )),
                         Text(
                           'Following',
                           style: TextStyle(color: Colors.white70),
@@ -125,7 +123,8 @@ class ProfileView extends StatelessWidget {
                 // Buttons for Edit Profile
                 ElevatedButton(
                   onPressed: () {
-                    // Navigate to edit profile page
+                    // Navigate to EditProfileView
+                    Get.to(() => EditProfileView());
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -140,8 +139,6 @@ class ProfileView extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
-
-                // Add other sections if needed, like user's posts or achievements
               ],
             ),
           ),
