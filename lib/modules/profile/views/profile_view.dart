@@ -8,7 +8,15 @@ class ProfileView extends StatelessWidget {
     final ProfileController controller = Get.find();
 
     return Scaffold(
-      appBar: AppBar(title: Text(controller.user.value.username)),
+      appBar: AppBar(
+        title: Text(controller.user.value.username),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => controller.logout(),  // Memanggil fungsi logout
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
