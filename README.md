@@ -45,7 +45,12 @@
     ├── routes
     │   ├── app_pages.dart
     │   └── app_routes.dart
-    ├── api_service.dart
     ├── game_stream_page.dart
     └── main.dart 
 ```
+
+## SEKEDAR TIPS CARA NGERUN FLUTTER
+1. Hapus direktori `android`
+2. Hapus direktori `build`
+3. Di Terminal, ketik `flutter create .` lalu jalankan
+4. Jalankan `flutter run` di terminal

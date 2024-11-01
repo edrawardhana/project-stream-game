@@ -1,9 +1,15 @@
 class UserModel {
-  final String username;
-  final String profilePicture;
-  final String bio;
-  final int followers;
-  final int following;
+  String username;
+  String profilePicture;
+  String? bio;
+  int followers;
+  int following;
 
-  UserModel({required this.username, required this.profilePicture, required this.bio, required this.followers, required this.following});
+  UserModel({
+    required this.username,
+    required this.profilePicture,
+    this.bio,
+    required this.followers,
+    required this.following,
+  });
 }
